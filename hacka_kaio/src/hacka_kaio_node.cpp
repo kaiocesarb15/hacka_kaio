@@ -149,11 +149,12 @@ void hacka_kaio_node::tmrPubGoto() {
     if(!_have_goal_){
         if(!_actions_){
             cltTackoff();
+            rclcpp::sleep_for(std::chrono::milliseconds(500));
 
             _actions_ = 1;
         }
 
-        else if(_actions_ <= _waypoints_qty_points_){
+        else if(_actions_ != 0 && _actions_ <= _waypoints_qty_points_){
             geometry_msgs::msg::Pose msg;
 
             msg.position.x = _waypoints_points_[3*(_actions_-1)];
@@ -163,6 +164,8 @@ void hacka_kaio_node::tmrPubGoto() {
             pub_goto_->publish(msg);
 
             RCLCPP_INFO(this->get_logger(), "Published goto: %f, %f, %f", msg.position.x, msg.position.y, msg.position.z);
+
+            rclcpp::sleep_for(std::chrono::milliseconds(500));
 
             _actions_++;
         }
