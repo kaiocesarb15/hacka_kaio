@@ -133,6 +133,7 @@ void hacka_kaio_node::subHaveGoal(const std_msgs::msg::Bool &msg) {
     return;
   }
 
+  std::lock_guard<std::mutex> lock(mutex_have_goal_);
   _have_goal_ = msg.data;
 
   //RCLCPP_INFO(this->get_logger(), "have_goal: %d", msg.data);
@@ -145,16 +146,21 @@ void hacka_kaio_node::tmrPubGoto() {
     return;
   }
 
+  bool have_goal;
+  {
+    std::lock_guard<std::mutex> lock(mutex_have_goal_);
+    have_goal = _have_goal_;
+  }
+
   if(_start_){
-    if(!_have_goal_){
+    if(!have_goal){
         if(!_actions_){
             cltTackoff();
-            rclcpp::sleep_for(std::chrono::milliseconds(500));
 
             _actions_ = 1;
         }
 
-        else if(_actions_ != 0 && _actions_ <= _waypoints_qty_points_){
+        else if(_actions_ <= _waypoints_qty_points_){
             geometry_msgs::msg::Pose msg;
 
             msg.position.x = _waypoints_points_[3*(_actions_-1)];
@@ -164,8 +170,6 @@ void hacka_kaio_node::tmrPubGoto() {
             pub_goto_->publish(msg);
 
             RCLCPP_INFO(this->get_logger(), "Published goto: %f, %f, %f", msg.position.x, msg.position.y, msg.position.z);
-
-            rclcpp::sleep_for(std::chrono::milliseconds(500));
 
             _actions_++;
         }

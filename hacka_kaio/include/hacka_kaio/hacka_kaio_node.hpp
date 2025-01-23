@@ -64,6 +64,8 @@ private:
   int _waypoints_qty_points_;
 
   std::vector<double> _waypoints_points_;
+
+  std::mutex mutex_have_goal_;
 };
 }  // namespace hacka_kaio
 
