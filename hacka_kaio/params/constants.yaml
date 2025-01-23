@@ -1,0 +1,11 @@
+hacka_kaio:
+  ros__parameters:
+    rate:  # [Hz]
+      tmr_pub_goto: 0.5
+
+    waypoints:
+      qty_points: 4
+      points: [2.0, 0.0, 2.0,
+               2.0, 2.0, 2.0,
+               0.0, 2.0, 2.0,
+               0.0, 0.0, 2.0]
