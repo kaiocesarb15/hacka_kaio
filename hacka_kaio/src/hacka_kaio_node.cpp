@@ -9,9 +9,9 @@ hacka_kaio_node::hacka_kaio_node(const rclcpp::NodeOptions &options) : rclcpp_li
   declare_parameter("rate.tmr_pub_goto", rclcpp::ParameterValue(0.5));
   declare_parameter("waypoints.qty_points", rclcpp::ParameterValue(4));
   declare_parameter<std::vector<double>>("waypoints.points", std::vector<double>{2.0, 0.0, 2.0,
-                                                                                2.0, 2.0, 2.0,
-                                                                                0.0, 2.0, 2.0,
-                                                                                0.0, 0.0, 2.0});
+                                                                                 2.0, 2.0, 2.0,
+                                                                                 0.0, 2.0, 2.0,
+                                                                                 0.0, 0.0, 2.0});
 
 
   is_active_ = false;
@@ -135,7 +135,7 @@ void hacka_kaio_node::subHaveGoal(const std_msgs::msg::Bool &msg) {
 
   _have_goal_ = msg.data;
 
-  RCLCPP_INFO(this->get_logger(), "have_goal: %d", msg.data);
+  //RCLCPP_INFO(this->get_logger(), "have_goal: %d", msg.data);
 }
 //}
 
@@ -150,7 +150,7 @@ void hacka_kaio_node::tmrPubGoto() {
         if(!_actions_){
             cltTackoff();
 
-            _actions_++;
+            _actions_ = 1;
         }
 
         else if(_actions_ <= _waypoints_qty_points_){
@@ -169,6 +169,7 @@ void hacka_kaio_node::tmrPubGoto() {
 
         else{
             cltLand();
+            _start_ = false;
         }
     }
   }
@@ -188,7 +189,7 @@ void hacka_kaio_node::srvStartNode([[maybe_unused]] const std::shared_ptr<std_sr
 
   response->message = "Node started";
 
-  RCLCPP_INFO(this->get_logger(), "start_node: %d", response->success);
+  //RCLCPP_INFO(this->get_logger(), "start_node: %d", response->success);
 }
 //}
 
@@ -204,13 +205,13 @@ void hacka_kaio_node::cltTackoff() {
     [this](rclcpp::Client<std_srvs::srv::Trigger>::SharedFuture future) {
       auto response = future.get();
       if (response->success) {
-        RCLCPP_INFO(this->get_logger(), "Takeoff successful");
+        //RCLCPP_INFO(this->get_logger(), "Takeoff successful");
       } else {
-        RCLCPP_WARN(this->get_logger(), "Takeoff failed");
+        //RCLCPP_WARN(this->get_logger(), "Takeoff failed");
       }
     });
 
-  RCLCPP_INFO(this->get_logger(), "Request sent to takeoff");
+  //RCLCPP_INFO(this->get_logger(), "Request sent to takeoff");
 }
 //}
 
@@ -226,13 +227,13 @@ void hacka_kaio_node::cltLand() {
     [this](rclcpp::Client<std_srvs::srv::Trigger>::SharedFuture future) {
       auto response = future.get();
       if (response->success) {
-        RCLCPP_INFO(this->get_logger(), "Land successful");
+        //RCLCPP_INFO(this->get_logger(), "Land successful");
       } else {
-        RCLCPP_WARN(this->get_logger(), "Land failed");
+        //RCLCPP_WARN(this->get_logger(), "Land failed");
       }
     });
 
-  RCLCPP_INFO(this->get_logger(), "Request sent to land");
+  //RCLCPP_INFO(this->get_logger(), "Request sent to land");
 }
 //}
 
