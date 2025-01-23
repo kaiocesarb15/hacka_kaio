@@ -39,8 +39,11 @@ def generate_launch_description():
         namespace='',
         output='screen',
         parameters=[constants_file],
-        remappings=[
-        ]
+        remappings=[('hacka_kaio/have_goal', 'uav1/have_goal'),         #Remap the subscriber: sub_have_goal_
+                    ('hacka_kaio/goto', 'uav1/goto'),                   #Remap the publisher: pub_goto_
+                    ('hacka_kaio/start_node', 'start_state_machine'),   #Remap the service: srv_start_node
+                    ('hacka_kaio/takeoff', 'uav1/takeoff'),             #Remap the client: clt_tackoff_
+                    ('hacka_kaio/land', 'uav1/land'),],                 #Remap the client: clt_land_
     )
 
     event_handlers = []

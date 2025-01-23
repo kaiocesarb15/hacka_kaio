@@ -1,7 +1,6 @@
 #ifndef HACKA_KAIO__HACKA_KAIO_NODE_HPP
 #define HACKA_KAIO__HACKA_KAIO_NODE_HPP
 
-#include <memory>
 #include <mutex>
 
 #include "rclcpp/rclcpp.hpp"
